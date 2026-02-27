@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Navbar scroll effect
     const navbar = document.getElementById('navbar');
-    
+
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
@@ -19,15 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
         'Infrastructure as Code.',
         'Reliable Systems.'
     ];
-    
+
     let wordIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
     let typeSpeed = 100;
-    
+
     function type() {
         const currentWord = words[wordIndex];
-        
+
         if (isDeleting) {
             typingText.textContent = currentWord.substring(0, charIndex - 1);
             charIndex--;
@@ -37,60 +37,56 @@ document.addEventListener('DOMContentLoaded', () => {
             charIndex++;
             typeSpeed = 100;
         }
-        
+
         // Word complete
         if (!isDeleting && charIndex === currentWord.length) {
             isDeleting = true;
             typeSpeed = 2000; // Pause at end of word
-        } 
+        }
         // Deletion complete
         else if (isDeleting && charIndex === 0) {
             isDeleting = false;
             wordIndex = (wordIndex + 1) % words.length;
             typeSpeed = 500; // Pause before new word
         }
-        
+
         setTimeout(type, typeSpeed);
     }
-    
+
     // Start typing effect
     setTimeout(type, 1000);
 
     // 3. Simulated Terminal Logs
     const terminalBody = document.getElementById('terminal-body');
     const logs = [
-        { text: 'Initializing Kubernetes cluster...', type: 'out', delay: 500 },
-        { text: 'kubectl apply -f manifest.yaml', type: 'cmd', delay: 800 },
-        { text: 'deployment.apps/frontend created', type: 'out', delay: 200 },
-        { text: 'service/frontend-svc created', type: 'out', delay: 100 },
-        { text: 'Waiting for pods to be ready...', type: 'warn', delay: 1200 },
-        { text: 'terraform apply -auto-approve', type: 'cmd', delay: 1000 },
-        { text: 'aws_eks_cluster.main: Creating...', type: 'out', delay: 300 },
-        { text: 'Apply complete! Resources: 1 added, 0 changed, 0 destroyed.', type: 'success', delay: 1500 },
-        { text: 'Pipeline deploying to production...', type: 'cmd', delay: 800 },
-        { text: 'SUCCESS: Deployment verified and healthy.', type: 'success', delay: 600 }
+        { text: 'whoami', type: 'cmd', delay: 500 },
+        { text: 'satham_hussain', type: 'out', delay: 800 },
+        { text: 'terraform init', type: 'cmd', delay: 200 },
+        { text: 'Initializing modules...', type: 'out', delay: 100 },
+        { text: 'echo "Infrastructure ready"', type: 'cmd', delay: 300 },
+        { text: 'Infrastructure ready', type: 'out', delay: 1500 }
     ];
-    
+
     let logIndex = 0;
-    
+
     function appendLog() {
         if (logIndex < logs.length && terminalBody) {
             const log = logs[logIndex];
             const div = document.createElement('div');
             div.className = `terminal-line ${log.type}`;
-            
+
             // Add prompt for cmd
             if (log.type === 'cmd') {
                 div.innerHTML = `<span class="prompt">$ </span>${log.text}`;
             } else {
                 div.textContent = log.text;
             }
-            
+
             terminalBody.appendChild(div);
             terminalBody.scrollTop = terminalBody.scrollHeight;
-            
+
             logIndex++;
-            
+
             if (logIndex < logs.length) {
                 setTimeout(appendLog, logs[logIndex].delay);
             } else {
@@ -103,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    
+
     // Only run if module exists
     if (terminalBody) {
         setTimeout(appendLog, 1500);
@@ -111,25 +107,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4. Smooth scrolling for nav links
     document.querySelectorAll('.nav-links a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+        anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            
+
             // Remove active class from all links
             document.querySelectorAll('.nav-links a').forEach(link => {
                 link.classList.remove('active');
             });
-            
+
             // Add active class to clicked link
             this.classList.add('active');
-            
+
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
-            
+
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
                 const navHeight = navbar.offsetHeight;
                 const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
-                
+
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
@@ -141,20 +137,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // 5. Active section highlighting on scroll
     const sections = document.querySelectorAll('.section, .hero');
     const navLinksList = document.querySelectorAll('.nav-links a');
-    
+
     window.addEventListener('scroll', () => {
         let current = '';
         const navHeight = navbar.offsetHeight;
-        
+
         sections.forEach(section => {
             const sectionTop = section.offsetTop - navHeight - 100;
             const sectionHeight = section.clientHeight;
-            
+
             if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
                 current = section.getAttribute('id');
             }
         });
-        
+
         navLinksList.forEach(link => {
             link.classList.remove('active');
             if (current && link.getAttribute('href') === `#${current}`) {
@@ -165,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 6. Back to Top Button
     const backToTopBtn = document.getElementById('back-to-top');
-    
+
     window.addEventListener('scroll', () => {
         if (window.scrollY > 500) {
             backToTopBtn.classList.add('visible');
@@ -173,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             backToTopBtn.classList.remove('visible');
         }
     });
-    
+
     if (backToTopBtn) {
         backToTopBtn.addEventListener('click', () => {
             window.scrollTo({
@@ -190,19 +186,19 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const btn = contactForm.querySelector('button[type="submit"]');
             const originalText = btn.innerHTML;
-            
+
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
             btn.disabled = true;
-            
+
             // Simulate sending
             setTimeout(() => {
                 btn.innerHTML = '<i class="fas fa-check"></i> Sent Successfully';
                 btn.classList.remove('btn-primary');
                 btn.style.backgroundColor = '#3fb950';
                 btn.style.color = '#fff';
-                
+
                 contactForm.reset();
-                
+
                 setTimeout(() => {
                     btn.innerHTML = originalText;
                     btn.classList.add('btn-primary');

@@ -50,8 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const commands = [
         { cmd: 'terraform init', resp: 'Initializing modules...', delay: 1000 },
         { cmd: 'terraform apply -auto-approve', resp: 'Apply complete! Resources: 15 added.', delay: 1500 },
-        { cmd: 'kubectl get nodes', resp: 'NAME             STATUS   ROLES    AGE\nnode-01          Ready    master   12d\nnode-02          Ready    worker   12d', delay: 1200 },
-        { cmd: 'echo "Infrastructure ready"', resp: 'Infrastructure ready', delay: 800 }
     ];
 
     let cmdIndex = 0;
